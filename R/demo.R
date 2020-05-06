@@ -1,13 +1,25 @@
+demos = list(
+  "basic" = "basic-demo",
+  "cycler" = "cycler-demo"
+)
+
 #' Demo
 #' 
 #' Run a demo.
 #' 
 #' @export
-demo <- function(){
+demo <- function(name="basic", display.mode="showcase", port=6169, ...) {
+  if (!(name %in% names(demos))) {
+    stop(sprintf("Invalid demo `%s`, available demos include: %s", name, paste(names(demos), collapse=" ")))
+  }
+
   shiny::runApp(
-    system.file("demo/basic-demo/", package = "shinySearchbar", 
-      mustWork = TRUE
+    system.file(
+      file.path("demo", demos[[name]]),
+      package="shinySearchbar", 
+      mustWork=TRUE
     ), 
-    display.mode = "showcase", port=6169
+    display.mode=display.mode, port=port,
+    ...
   )
 }

@@ -1,4 +1,8 @@
 mark {
   padding: 0;
-  background: #f1c40f;
+  background: yellow;
+}
+
+mark.current {
+  background: orange;
 }
