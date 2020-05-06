@@ -4,7 +4,7 @@ ui <- shinyUI(
 
     sidebarPanel(
       searchbar("searchbar", context="text", placeholder="Search text here...",
-        cycler=TRUE
+        cycler=TRUE, scrollBehavior="smooth"
       ),
 
       tags$div(

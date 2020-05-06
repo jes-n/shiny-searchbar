@@ -27,7 +27,7 @@ $.extend(searchbar, {
 
     el.$context[0].scrollTo({
       top: position,
-      behavior: 'smooth'
+      behavior: $(el).data("scroll-behavior")
     });
   },
 

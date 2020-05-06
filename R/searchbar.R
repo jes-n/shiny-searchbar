@@ -1,8 +1,5 @@
-`%AND%` <- shiny:::`%AND%`
-
-`%_%` <- function(x, y) {
-  paste(x, y, sep='_')
-}
+#' @include utils.R
+NULL
 
 #' <Add Title>
 #'
@@ -10,8 +7,11 @@
 #'
 #' @export
 searchbar <- function(inputId, context, label=NULL, width=NULL, placeholder=NULL,
-    cycler=FALSE, highlight="yellow", highlight2="orange"
+    cycler=FALSE, scrollBehavior=c("smooth", "auto"),
+    highlight="yellow", highlight2="orange"
   ) {
+  scrollBehavior <- default(scrollBehavior)
+  
   addResourcePath(prefix='js', directoryPath=system.file("assets/js", package='shinySearchbar'))
   addResourcePath(prefix='css', directoryPath=system.file("assets/css", package='shinySearchbar'))
 
@@ -42,7 +42,8 @@ searchbar <- function(inputId, context, label=NULL, width=NULL, placeholder=NULL
       div(id=inputId, class="input-group shiny-searchbar",
         searchbarTags,
         `data-context` = context,
-        `data-cycler` = if (cycler) "true" else "false"
+        `data-cycler` = if (cycler) "true" else "false",
+        `data-scroll-behavior` = if (cycler) scrollBehavior else "null"
       )
     )
   )
