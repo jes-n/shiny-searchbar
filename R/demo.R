@@ -1,6 +1,7 @@
 demos = list(
   "basic" = "basic-demo",
-  "cycler" = "cycler-demo"
+  "cycler" = "cycler-demo",
+  "overflow" = "overflow-demo"
 )
 
 #' Demo

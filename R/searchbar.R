@@ -10,22 +10,21 @@
 #'
 #' @export
 searchbar <- function(inputId, context, label=NULL, width=NULL, placeholder=NULL,
-    cycler=FALSE, highlight="#f1c40f"
+    cycler=FALSE, highlight="yellow", highlight2="orange"
   ) {
   addResourcePath(prefix='js', directoryPath=system.file("assets/js", package='shinySearchbar'))
   addResourcePath(prefix='css', directoryPath=system.file("assets/css", package='shinySearchbar'))
 
   searchbarTags <- tagList(
-    tags$input(type="text", id=inputId %_% "keyword",
-      placeholder = placeholder
-    )
+    tags$input(type="text", id=inputId %_% "keyword", placeholder=placeholder)
   )
 
+  # Add the cycler buttons to the list if enabled
   if (cycler) {
     searchbarTags <- tagList(
       searchbarTags,
-      tags$button(class="btn", type="button", id=inputId %_% "next", `data-search`="next", HTML("&darr;")),
-      tags$button(class="btn", type="button", id=inputId %_% "prev", `data-search`="prev", HTML("&uarr;"))
+      tags$button(class="btn btn-xs", type="button", id=inputId %_% "next", `data-search`="next", HTML("&darr;")),
+      tags$button(class="btn btn-xs", type="button", id=inputId %_% "prev", `data-search`="prev", HTML("&uarr;"))
     )
   }
 
@@ -43,7 +42,7 @@ searchbar <- function(inputId, context, label=NULL, width=NULL, placeholder=NULL
       div(id=inputId, class="input-group shiny-searchbar",
         searchbarTags,
         `data-context` = context,
-        `data-cycler` = cycler
+        `data-cycler` = if (cycler) "true" else "false"
       )
     )
   )
