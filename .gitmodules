@@ -1,0 +1,3 @@
+[submodule "mark.js"]
+	path = lib/mark.js
+	url = https://github.com/julmot/mark.js/
