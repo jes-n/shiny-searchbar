@@ -18,26 +18,42 @@ $.extend(searchbar, {
   },
 
   jump: function (el, $mark) {
-    var topOffset = $(el).offset();
+    var $parent = $mark.parent();
+    var parentOffset = $parent.offset();
     var markOffset = $mark.offset();
-    var markTop = el.$context.scrollTop();
 
-    // Calculate the position to scroll to
-    var position = markTop + markOffset.top - topOffset.top
+    // Calculate the vertical position for scrolling
+    var markHeight = $mark.height();
+    var toppos = $parent.scrollTop() + markOffset.top - parentOffset.top;
+    toppos -= 1.5*markHeight; // Leave a small amount of vertical margin for context
 
-    el.$context[0].scrollTo({
-      top: position,
+    // Calculate the horizontal position for scrolling
+    // Unlike the vertical position, this will only scroll if the mark is out of the parent window
+    var parentWidth = $parent.outerWidth();
+    var markWidth = $mark.width();
+    var leftpos = $parent.scrollLeft() + markOffset.left - parentOffset.left;
+    if ((leftpos + markWidth) > parentWidth) {
+      leftpos -= (parentWidth - markWidth)/2; // Horizontally center the mark in the parent window
+    } else {
+      leftpos = 0;
+    }
+
+    $parent[0].scrollTo({
+      left: leftpos,
+      top: toppos,
       behavior: $(el).data("scroll-behavior")
     });
   },
 
   current: function (el, index) {
-    var $results = el.$context.find("mark");
-    var $mark = $results.eq(index);
+    if ($(el).data("matches") > 0) {
+      var $results = el.$context.find("mark");
+      var $mark = $results.eq(index);
 
-    $results.removeClass("current");
-    $mark.addClass("current");
-    searchbar.jump(el, $mark);
+      $results.removeClass("current");
+      $mark.addClass("current");
+      searchbar.jump(el, $mark);
+    }
   },
 
   highlight: function (el) {
