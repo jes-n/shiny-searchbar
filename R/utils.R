@@ -54,9 +54,10 @@ default <- function(arg) {
   }, error = function(e) {
     # If match.arg raises an error, parse its error message and provide more details to the user
     # This includes the given argument value, the name of the calling function, and the expected value(s)
-    msg <- sprintf(
-      "Invalid option %s='%s' in '%s' call.\n  S%s",
-      name, arg, f, sub("'.*' s", "", e$message)
+    msg <- paste(
+      sprintf("Invalid option %s='%s' in '%s' call.", name, arg, f),
+      sprintf("  S%s", sub("'.*' s", "", e$message)),
+      sep = "\n"
     )
 
     # Raise a warning, then continue with execution
