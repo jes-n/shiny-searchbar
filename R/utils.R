@@ -29,8 +29,8 @@
 #' [1] 3
 #'
 #' @import tools
-default <- function(arg) {
-  tryCatch({
+default <- function(arg, choices, message=NULL) {
+  arg <- tryCatch({
     # Determine the name of the calling function (i.e. which=-1)
     # sys.call returns the entire call syntax, including the arguments
     # as.list splits the syntax into a numbered list, with the function first and the arguments following
@@ -38,32 +38,40 @@ default <- function(arg) {
     f <- deparse(as.list(sys.call(-1))[[1]])
 
     # Get the formal name of the argument passed to this function
-    name <- as.character(substitute(arg))
+    name <- deparse(substitute(arg))
 
-    # Get the formal arguments of the calling function
-    # Here sys.function returns the entire function definition of the calling function
-    proto <- formals(sys.function(-1))
+    if (missing(choices)) {
+      # Get the formal arguments of the calling function
+      # Here sys.function returns the entire function definition of the calling function
+      proto <- formals(sys.function(-1))
 
-    # Extract the default arguments, given in the formal argument definition of the calling function
-    # sys.frame is used to get the environment of the calling function
-	  choices <- eval(proto[[name]], envir=sys.frame(-1))
+      # Extract the default arguments, given in the formal argument definition of the calling function
+      # sys.frame is used to get the environment of the calling function
+      choices <- eval(proto[[name]], envir=sys.frame(-1))
+    }
 
     # Used match.arg to issue a warning if the defined argument is not in the list of default arguments
     # This entire function is based off the match.arg function
     return(match.arg(arg, choices))
+
   }, error = function(e) {
     # If match.arg raises an error, parse its error message and provide more details to the user
     # This includes the given argument value, the name of the calling function, and the expected value(s)
-    msg <- paste(
+    msg <- c(
       sprintf("Invalid option %s='%s' in '%s' call.", name, arg, f),
-      sprintf("  S%s", sub("'.*' s", "", e$message)),
-      sep = "\n"
+      sprintf("  S%s", sub("'.*' s", "", e$message))
     )
 
-    # Raise a warning, then continue with execution
-    warning(msg, call.=FALSE)
+    # Append the optional user message
+    if (!is.null(message))
+      msg <- c(msg, sprintf("  %s", message))
+
+    # Raise a warning, instead of stopping the execution
+    warning(paste(msg, collapse="\n"), call.=FALSE)
+
+    # If match.arg is not successful, return the original argument
+    return(arg)
   })
 
-  # If match.arg is not successful, return the original argument
   return(arg)
 }

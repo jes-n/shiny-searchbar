@@ -60,11 +60,14 @@ $.extend(searchbar, {
     var keyword = el.$searchbar.val();
 
     var opts = {
-      "done": function (count) {
-        // Store the total number of matches
-        $(el).data("matches", count);
-        // Reset the current index
-        $(el).data("current", $(el).data("cycler") ? 0 : null);
+      ...$(el).data("mark-options"),
+      ...{
+        "done": function (count) {
+          // Store the total number of matches
+          $(el).data("matches", count);
+          // Reset the current index
+          $(el).data("current", $(el).data("cycler") ? 0 : null);
+        }
       }
     };
 

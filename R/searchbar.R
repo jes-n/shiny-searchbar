@@ -1,17 +1,48 @@
 #' @include utils.R
 NULL
 
+#' Configuration Options for Mark.js mark()
+#'
+#' These are all the available options for Mark.js v8.11.1,
+#' excluding the element option (used internally) and the callback
+#' functions: each, filter, noMatch, and done (some of which are
+#' used internally.
+#'
+#' See https://markjs.io/#mark for a detailed description of each option.
+#' Also see https://markjs.io/configurator.html for these options in action.
+#'
+configurator <- list(
+  className="",
+  seperateWordSearch=TRUE,
+  accuracy=c("partially", "complementary", "exactly"),
+  diacritics=TRUE,
+  synonyms=list(),
+  iframes=FALSE,
+  iframesTimeout=5000,
+  acrossElements=FALSE,
+  caseSensitive=FALSE,
+  ignoreJoiners=FALSE,
+  ignorePunctuation=c(),
+  wildcards=c("disabled", "enabled", "withSpaces"),
+  debug=FALSE
+)
+
 #' <Add Title>
 #'
 #' <Add Description>
 #'
+#' @import jsonlite
 #' @export
 searchbar <- function(inputId, context, label=NULL, width=NULL, placeholder=NULL,
     cycler=FALSE, scrollBehavior=c("smooth", "auto"),
-    highlight="yellow", highlight2="orange"
+    markOpts=configurator, highlight="yellow", highlight2="orange"
   ) {
-  scrollBehavior <- default(scrollBehavior)
-  
+
+  # Set or check argument values against default options
+  scrollBehavior <- default(scrollBehavior, message="See https://developer.mozilla.org/en-US/docs/Web/API/ScrollToOptions for more details.")
+  markOpts$accuracy <- default(markOpts$accuracy, choices=configurator$accuracy, message="See https://markjs.io/#mark for more details.")
+  markOpts$wildcards <- default(markOpts$wildcards, choices=configurator$wildcards, message="See https://markjs.io/#mark for more details.")
+
   addResourcePath(prefix='js', directoryPath=system.file("assets/js", package='shinySearchbar'))
   addResourcePath(prefix='css', directoryPath=system.file("assets/css", package='shinySearchbar'))
 
@@ -19,7 +50,7 @@ searchbar <- function(inputId, context, label=NULL, width=NULL, placeholder=NULL
     tags$input(type="text", id=inputId %_% "keyword", placeholder=placeholder)
   )
 
-  # Add the cycler buttons to the list if enabled
+  # Add the cycler buttons to the list, if enabled
   if (cycler) {
     searchbarTags <- tagList(
       searchbarTags,
@@ -43,7 +74,8 @@ searchbar <- function(inputId, context, label=NULL, width=NULL, placeholder=NULL
         searchbarTags,
         `data-context` = context,
         `data-cycler` = if (cycler) "true" else "false",
-        `data-scroll-behavior` = if (cycler) scrollBehavior else "null"
+        `data-scroll-behavior` = if (cycler) scrollBehavior else "null",
+        `data-mark-options` = jsonlite::toJSON(markOpts)
       )
     )
   )
