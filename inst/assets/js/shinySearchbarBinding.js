@@ -1,4 +1,4 @@
-var searchbar = new Shiny.InputBinding();
+const searchbar = new Shiny.InputBinding();
 
 $.extend(searchbar, {
   find: function (scope) {
@@ -6,7 +6,7 @@ $.extend(searchbar, {
   },
 
   initialize: function (el) {
-    var context = $(el).data("context");
+    const context = $(el).data("context");
     el.$context = $('#' + context);
 
     el.$searchbar = $(el).find("input[type='text']");
@@ -18,8 +18,12 @@ $.extend(searchbar, {
     $(el).data("current", $(el).data("cycler") ? 0 : null);
   },
 
+  /**
+   * Updates the search bar counter
+   * @param {HTMLElement} el The searchbar input binding element.
+   */
   counter: function (el) {
-    var msg;
+    let msg;
 
     // Remove classes
     el.$counter.removeClass("nomatch match");
@@ -28,38 +32,44 @@ $.extend(searchbar, {
     if (el.$searchbar.val().length == 0) {
       msg = null;
 
-      // No matches to user input
+    // No matches to user input
     } else if ($(el).data("matches") == 0) {
       el.$counter.addClass("nomatch");
       msg = "No matches";
 
-      // Matches found, check if cycler enabled
+    // Matches found, check if cycler enabled
     } else {
       el.$counter.addClass("match");
-      if ($(el).data("cycler"))
+      if ($(el).data("cycler")) {
         msg = $(el).data("current") + 1 + " of " + $(el).data("matches");
-      else
+      } else {
         msg = $(el).data("matches") + " matches";
+      }
     }
 
     el.$counter.text(msg);
   },
 
+  /**
+   * Scrol to the currently highlighted mark element
+   * @param {HTMLElement} el The searchbar input binding element.
+   * @param {jQuery} $mark The mark element that is currently highlighted.
+   */
   jump: function (el, $mark) {
-    var $parent = $mark.parent();
-    var parentOffset = $parent.offset();
-    var markOffset = $mark.offset();
+    const $parent = $mark.parent();
+    const parentOffset = $parent.offset();
+    const markOffset = $mark.offset();
 
     // Calculate the vertical position for scrolling
-    var markHeight = $mark.height();
-    var toppos = $parent.scrollTop() + markOffset.top - parentOffset.top;
+    const markHeight = $mark.height();
+    let toppos = $parent.scrollTop() + markOffset.top - parentOffset.top;
     toppos -= 1.5*markHeight; // Leave a small amount of vertical margin for context
 
     // Calculate the horizontal position for scrolling
     // Unlike the vertical position, this will only scroll if the mark is out of the parent window
-    var parentWidth = $parent.outerWidth();
-    var markWidth = $mark.width();
-    var leftpos = $parent.scrollLeft() + markOffset.left - parentOffset.left;
+    const parentWidth = $parent.outerWidth();
+    const markWidth = $mark.width();
+    let leftpos = $parent.scrollLeft() + markOffset.left - parentOffset.left;
     if ((leftpos + markWidth) > parentWidth) {
       leftpos -= (parentWidth - markWidth)/2; // Horizontally center the mark in the parent window
     } else {
@@ -73,30 +83,40 @@ $.extend(searchbar, {
     });
   },
 
+  /**
+   * Denote the currently highlighted mark element and scroll to it
+   * @param {HTMLElement} el The searchbar input binding element.
+   * @param {!int} index Index of the currently highlighted mark within the
+   *     results array.
+   */
   current: function (el, index) {
     if ($(el).data("matches") > 0) {
-      var $results = el.$context.find("mark");
-      var $mark = $results.eq(index);
+      const $results = el.$context.find("mark");
+      const $mark = $results.eq(index);
 
       $results.removeClass("current");
       $mark.addClass("current");
       searchbar.jump(el, $mark);
     }
+    $(el).data("current", index);
   },
 
+  /**
+   * Perform the text highlighting using mark.js
+   * @param {HTMLElement} el The searchbar input binding element.
+   */
   highlight: function (el) {
-    var keyword = el.$searchbar.val();
+    const keyword = el.$searchbar.val();
 
-    var opts = $.extend({},
-      $(el).data("mark-options"), {
-        "done": function (count) {
-          // Store the total number of matches
-          $(el).data("matches", count);
-          // Reset the current index
-          $(el).data("current", $(el).data("cycler") ? 0 : null);
-        }
-      }
-    );
+    const opts = {
+      ...$(el).data("mark-options"),
+      "done": function (count) {
+        // Store the total number of matches
+        $(el).data("matches", count);
+        // Reset the current index
+        $(el).data("current", $(el).data("cycler") ? 0 : null);
+      },
+    };
 
     el.$context.unmark({
       // Check for the iframes options or assign default value of 'false'
@@ -106,45 +126,38 @@ $.extend(searchbar, {
       }
     });
 
-    if ($(el).data("cycler")) {
-      searchbar.current(el, $(el).data("current"));
-    };
-
-    if ($(el).data("counter")) {
-      searchbar.counter(el);
-    };
+    if ($(el).data("cycler")) searchbar.current(el, $(el).data("current"));
+    if ($(el).data("counter")) searchbar.counter(el);
   },
 
+  /**
+   * Cycle between all the matches, if the cycler is enabled
+   * @param {HTMLElement} el The searchbar input binding element.
+   * @param {!HTMLButtonElement} btn The button that was pressed to execute
+   *     the next cycle.
+   */
   cycle: function (el, btn) {
-    var index = $(el).data("current");
-    var total = $(el).data("matches");
+    const total = $(el).data("matches");
+    let index = $(el).data("current");
 
     // Increment the counter based on the button pressed
     index += $(btn).is(el.$next) ? 1 : -1;
 
     // Roll the index over when it goes below 0
-    if (index < 0) {
-      index = total - 1;
-    }
+    if (index < 0) index = total - 1;
 
     // Reset the index when it exceeds the total number of matches (minus 1, of course)
-    if (index > total - 1) {
-      index = 0
-    }
+    if (index > total - 1) index = 0;
 
     searchbar.current(el, index);
-    $(el).data("current", index);
-
-    if ($(el).data("counter")) {
-      searchbar.counter(el);
-    }
+    if ($(el).data("counter")) searchbar.counter(el);
   },
 
   getValue: function (el) {
     return {
       "keyword": el.$searchbar.val(),
       "matches": $(el).data("matches"),
-      "current": $(el).data("current")
+      "current": $(el).data("current"),
     };
   },
 
@@ -173,14 +186,14 @@ $.extend(searchbar, {
           el.$prev.click();
         } else if (event.which === 13) {
           el.$next.click();
-        };
+        }
       });
 
       // Block the enter key for incrementing the buttons when they're in focus
       el.$next.add(el.$prev).on('keypress', function (event) {
         event.preventDefault();
       });
-    };
+    }
   }
 });
 
