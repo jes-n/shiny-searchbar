@@ -13,7 +13,7 @@ NULL
 #'
 configurator <- list(
   className="",
-  seperateWordSearch=TRUE,
+  separateWordSearch=TRUE,
   accuracy=c("partially", "complementary", "exactly"),
   diacritics=TRUE,
   synonyms=list(),
@@ -37,6 +37,18 @@ searchbar <- function(inputId, context, label=NULL, width=NULL, placeholder=NULL
     cycler=FALSE, scrollBehavior=c("smooth", "auto"),
     markOpts=configurator, highlight="yellow", highlight2="orange"
   ) {
+
+  # Check no invalid (or misspelled) options are passed to markOpts
+  # Take 'seperateWordSearch' instead of 'separateWordSearch' for example...
+  invalidOpts <- names(markOpts)[!(names(markOpts) %in% names(configurator))]
+  if (length(invalidOpts) > 0) {
+    msg <- paste(
+      sprintf("Invalid option(s) in 'markOpts' argument: %s", paste(invalidOpts, collapse=" ")),
+      sprintf("  Should be %s", paste(names(configurator), collapse=" ")),
+      sep = "\n"
+    )
+    warning(msg, call.=FALSE)
+  }
 
   # Set or check argument values against default options
   scrollBehavior <- default(scrollBehavior, message="See https://developer.mozilla.org/en-US/docs/Web/API/ScrollToOptions for more details.")
@@ -75,7 +87,7 @@ searchbar <- function(inputId, context, label=NULL, width=NULL, placeholder=NULL
         `data-context` = context,
         `data-cycler` = if (cycler) "true" else "false",
         `data-scroll-behavior` = if (cycler) scrollBehavior else "null",
-        `data-mark-options` = jsonlite::toJSON(markOpts)
+        `data-mark-options` = jsonlite::toJSON(markOpts, auto_unbox=TRUE)
       )
     )
   )

@@ -59,9 +59,8 @@ $.extend(searchbar, {
   highlight: function (el) {
     var keyword = el.$searchbar.val();
 
-    var opts = {
-      ...$(el).data("mark-options"),
-      ...{
+    var opts = $.extend({},
+      $(el).data("mark-options"), {
         "done": function (count) {
           // Store the total number of matches
           $(el).data("matches", count);
@@ -69,9 +68,11 @@ $.extend(searchbar, {
           $(el).data("current", $(el).data("cycler") ? 0 : null);
         }
       }
-    };
+    );
 
     el.$context.unmark({
+      // Check for the iframes options or assign default value of 'false'
+      iframes: opts.hasOwnProperty('iframes') ? opts.iframes : false,
       done: function () {
         el.$context.mark(keyword, opts);
       }

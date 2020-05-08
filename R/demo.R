@@ -1,14 +1,13 @@
 demos = list(
   "basic" = "basic-demo",
   "cycler" = "cycler-demo",
-  "overflow" = "overflow-demo"
+  "overflow" = "overflow-demo",
+  "configurator" = "configurator-demo"
 )
 
 #' Demo
 #' 
 #' Run a demo.
-#' 
-#' @export
 demo <- function(name="basic", display.mode="showcase", port=6169, ...) {
   if (!(name %in% names(demos))) {
     stop(sprintf("Invalid demo `%s`, available demos include: %s", name, paste(names(demos), collapse=" ")))
