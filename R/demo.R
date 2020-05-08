@@ -10,6 +10,8 @@ demos = list(
 #' Demo
 #' 
 #' Run a demo.
+#'
+#' @import shiny
 demo <- function(name="basic", display.mode="showcase", port=6169, ...) {
   if (!(name %in% names(demos))) {
     stop(sprintf("Invalid demo `%s`, available demos include: %s", name, paste(names(demos), collapse=" ")))

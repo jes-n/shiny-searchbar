@@ -1,4 +1,6 @@
 #' Import shiny's internal `%AND%` function
+#'
+#' @import shiny
 `%AND%` <- shiny:::`%AND%`
 
 #' Inspired by shiny's `%.%` function which joins two arguments with a '.'
