@@ -2,7 +2,9 @@ demos = list(
   "basic" = "basic-demo",
   "cycler" = "cycler-demo",
   "overflow" = "overflow-demo",
-  "configurator" = "configurator-demo"
+  "configurator" = "configurator-demo",
+  "iframe" = "iframe-demo",
+  "counter" = "counter-demo"
 )
 
 #' Demo

@@ -7,6 +7,10 @@
   paste(x, y, sep='_')
 }
 
+`%nin%` <- function(x, y) {
+  names(x)[!(names(x) %in% names(y))]
+} 
+
 #' Non-blocking match.arg with better error reporting.
 #'
 #' Performs similar traceback as match.arg for default argument values. Unlike

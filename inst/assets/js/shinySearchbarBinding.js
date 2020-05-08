@@ -12,9 +12,37 @@ $.extend(searchbar, {
     el.$searchbar = $(el).find("input[type='text']");
     el.$next = $(el).find("button[data-search='next']");
     el.$prev = $(el).find("button[data-search='prev']");
+    el.$counter = $(el).find("small[data-search='counter']");
 
     $(el).data("matches", 0);
     $(el).data("current", $(el).data("cycler") ? 0 : null);
+  },
+
+  counter: function (el) {
+    var msg;
+
+    // Remove classes
+    el.$counter.removeClass("nomatch match");
+
+    // No user input
+    if (el.$searchbar.val().length == 0) {
+      msg = null;
+
+      // No matches to user input
+    } else if ($(el).data("matches") == 0) {
+      el.$counter.addClass("nomatch");
+      msg = "No matches";
+
+      // Matches found, check if cycler enabled
+    } else {
+      el.$counter.addClass("match");
+      if ($(el).data("cycler"))
+        msg = $(el).data("current") + 1 + " of " + $(el).data("matches");
+      else
+        msg = $(el).data("matches") + " matches";
+    }
+
+    el.$counter.text(msg);
   },
 
   jump: function (el, $mark) {
@@ -81,6 +109,10 @@ $.extend(searchbar, {
     if ($(el).data("cycler")) {
       searchbar.current(el, $(el).data("current"));
     };
+
+    if ($(el).data("counter")) {
+      searchbar.counter(el);
+    };
   },
 
   cycle: function (el, btn) {
@@ -102,6 +134,10 @@ $.extend(searchbar, {
 
     searchbar.current(el, index);
     $(el).data("current", index);
+
+    if ($(el).data("counter")) {
+      searchbar.counter(el);
+    }
   },
 
   getValue: function (el) {

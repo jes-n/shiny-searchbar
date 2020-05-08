@@ -6,3 +6,11 @@ mark {
 mark.current {
   background: orange;
 }
+
+.sb-counter.match {
+  color: #777;
+}
+
+.sb-counter.nomatch {
+  color: red;
+}

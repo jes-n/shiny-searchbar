@@ -34,13 +34,13 @@ configurator <- list(
 #' @import jsonlite
 #' @export
 searchbar <- function(inputId, context, label=NULL, width=NULL, placeholder=NULL,
-    cycler=FALSE, scrollBehavior=c("smooth", "auto"),
+    cycler=FALSE, counter=FALSE, scrollBehavior=c("smooth", "auto"),
     markOpts=configurator, highlight="yellow", highlight2="orange"
   ) {
 
   # Check no invalid (or misspelled) options are passed to markOpts
   # Take 'seperateWordSearch' instead of 'separateWordSearch' for example...
-  invalidOpts <- names(markOpts)[!(names(markOpts) %in% names(configurator))]
+  invalidOpts <- markOpts %nin% configurator
   if (length(invalidOpts) > 0) {
     msg <- paste(
       sprintf("Invalid option(s) in 'markOpts' argument: %s", paste(invalidOpts, collapse=" ")),
@@ -71,6 +71,14 @@ searchbar <- function(inputId, context, label=NULL, width=NULL, placeholder=NULL
     )
   }
 
+  # And the counter element to the tag list, if enabled
+  if (counter) {
+    searchbarTags <- tagList(
+      searchbarTags,
+      tags$small(class="sb-counter", id=inputId %_% "counter", `data-search`="counter")
+    )
+  }
+
   tagList(
     singleton(tags$head(
       tags$script(src="js/jquery.mark.min.js"),
@@ -85,7 +93,8 @@ searchbar <- function(inputId, context, label=NULL, width=NULL, placeholder=NULL
       div(id=inputId, class="input-group shiny-searchbar",
         searchbarTags,
         `data-context` = context,
-        `data-cycler` = if (cycler) "true" else "false",
+        `data-cycler` = jsonlite::toJSON(cycler, auto_unbox=TRUE),
+        `data-counter` = jsonlite::toJSON(counter, auto_unbox=TRUE),
         `data-scroll-behavior` = if (cycler) scrollBehavior else "null",
         `data-mark-options` = jsonlite::toJSON(markOpts, auto_unbox=TRUE)
       )
