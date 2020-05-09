@@ -4,7 +4,8 @@ demos = list(
   "overflow" = "overflow-demo",
   "configurator" = "configurator-demo",
   "iframe" = "iframe-demo",
-  "counter" = "counter-demo"
+  "counter" = "counter-demo",
+  "gallery" = "gallery-demo"
 )
 
 #' Demo
@@ -12,7 +13,7 @@ demos = list(
 #' Run a demo.
 #'
 #' @import shiny
-demo <- function(name="basic", display.mode="showcase", port=6169, ...) {
+demo <- function(name="gallery", display.mode="showcase", port=6169, ...) {
   if (!(name %in% names(demos))) {
     stop(sprintf("Invalid demo `%s`, available demos include: %s", name, paste(names(demos), collapse=" ")))
   }
