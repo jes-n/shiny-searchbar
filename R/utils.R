@@ -3,15 +3,20 @@
 #' @import shiny
 `%AND%` <- shiny:::`%AND%`
 
-#' Inspired by shiny's `%.%` function which joins two arguments with a '.'
-#' Instead of a '.', this implementation uses a '_' (more suitable for HTML)
-`%_%` <- function(x, y) {
-  paste(x, y, sep='_')
-}
 
-`%nin%` <- function(x, y) {
-  names(x)[!(names(x) %in% names(y))]
-} 
+#' Underscore Join Operator
+#' 
+#' Inspired by shiny's `%.%` function which joins two arguments with a
+#' period (.), but instead uses an underscore (_) which is more suitable
+#' for HTML `id` attributes.
+`%_%` <- function(x, y) paste(x, y, sep='_')
+
+
+#' Names-Not-In Operator
+#' 
+#' Shorthand to determine object names in `x` but not in `y`
+`%nin%` <- function(x, y) names(x)[!(names(x) %in% names(y))]
+
 
 #' Non-blocking match.arg with better error reporting.
 #'
@@ -58,9 +63,15 @@ default <- function(arg, choices, message=NULL) {
 
     # Used match.arg to issue a warning if the defined argument is not in the list of default arguments
     # This entire function is based off the match.arg function
+    # print(arg, choices)
     return(match.arg(arg, choices))
 
   }, error = function(e) {
+    # match.arg can raise many diffrent errors
+    # Make sure the correct one is caught, if not raise it again
+    if (!grepl("'arg' should be one of", e$message))
+      stop(e)
+
     # If match.arg raises an error, parse its error message and provide more details to the user
     # This includes the given argument value, the name of the calling function, and the expected value(s)
     msg <- c(
