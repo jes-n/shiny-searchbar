@@ -34,12 +34,12 @@ configurator <- list(
 #' @import jsonlite
 #' @export
 searchbar <- function(inputId, context, label=NULL, width=NULL, placeholder=NULL,
-    cycler=FALSE, counter=FALSE, scrollBehavior=c("smooth", "auto"),
-    markOpts=configurator, highlight="yellow", highlight2="orange"
+    counter=FALSE, cycler=FALSE, scrollBehavior=c("smooth", "auto"),
+    markOpts=configurator
   ) {
 
   # Check no invalid (or misspelled) options are passed to markOpts
-  # Take 'seperateWordSearch' instead of 'separateWordSearch' for example...
+  # Take 'seperateWordSearch' instead of 'separateWordSearch', for example...
   invalidOpts <- markOpts %nin% configurator
   if (length(invalidOpts) > 0) {
     msg <- paste(
@@ -59,23 +59,25 @@ searchbar <- function(inputId, context, label=NULL, width=NULL, placeholder=NULL
   addResourcePath(prefix='css', directoryPath=system.file("assets/css", package='shinySearchbar'))
 
   searchbarTags <- tagList(
-    tags$input(type="text", id=inputId %_% "keyword", placeholder=placeholder)
+    tags$input(class="form-control", type="text", id=inputId %_% "keyword", placeholder=placeholder)
   )
 
-  # Add the cycler buttons to the list, if enabled
-  if (cycler) {
-    searchbarTags <- tagList(
-      searchbarTags,
-      tags$button(class="btn btn-xs", type="button", id=inputId %_% "next", `data-search`="next", HTML("&darr;")),
-      tags$button(class="btn btn-xs", type="button", id=inputId %_% "prev", `data-search`="prev", HTML("&uarr;"))
+  if (counter) {
+    # Append the counter element to the tag list
+    searchbarTags <- searchbarTags %>% tagList(
+      tags$div(class="btm-addon",
+        tags$small(class="text-muted sb-counter", id=inputId %_% "counter", `data-search`="counter")
+      )
     )
   }
 
-  # And the counter element to the tag list, if enabled
-  if (counter) {
-    searchbarTags <- tagList(
-      searchbarTags,
-      tags$small(class="sb-counter", id=inputId %_% "counter", `data-search`="counter")
+  if (cycler) {
+    # Append the cycler buttons to the list
+    searchbarTags <- searchbarTags %>% tagList(
+      tags$span(class="input-group-btn", style = if (cycler) "vertical-align: top;",
+        tags$button(class="btn sb-btn", type="button", id=inputId %_% "next", `data-search`="next", HTML("&darr;")),
+        tags$button(class="btn sb-btn", type="button", id=inputId %_% "prev", `data-search`="prev", HTML("&uarr;"))
+      )
     )
   }
 
@@ -90,7 +92,7 @@ searchbar <- function(inputId, context, label=NULL, width=NULL, placeholder=NULL
       style = if (!is.null(width)) paste0("width: ", validateCssUnit(width), ";"),
       label %AND% tags$label(label, `for` = inputId),
 
-      div(id=inputId, class="input-group shiny-searchbar",
+      div(id=inputId, class = if (cycler) "input-group shiny-sb" else "shiny-sb",
         searchbarTags,
         `data-context` = context,
         `data-cycler` = jsonlite::toJSON(cycler, auto_unbox=TRUE),

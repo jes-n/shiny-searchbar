@@ -26,6 +26,7 @@ Collate:
     'searchbar.R'
 Imports: 
     shiny,
+    magrittr,
     jsonlite
 Suggests: 
     testthat

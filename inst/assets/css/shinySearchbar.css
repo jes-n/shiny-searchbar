@@ -7,8 +7,26 @@ mark.current {
   background: orange;
 }
 
+
+.btm-addon {
+  float: right;
+  padding: 2px;
+  text-align: right;
+}
+
+
+.sb-btn {
+  padding: 6px 6px;
+  border: 1px solid #ccc;
+}
+
+
+.sb-counter {
+  display: inline-block;
+}
+
 .sb-counter.match {
-  color: #777;
+  color: inherit;
 }
 
 .sb-counter.nomatch {
