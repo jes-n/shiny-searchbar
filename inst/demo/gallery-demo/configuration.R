@@ -101,13 +101,7 @@ server <- function(input, output, session) {
   })
 
   output$call <- renderText({
-    # function(inputId, context, value=NULL, label=NULL, width=NULL, placeholder=NULL,
-    #   counter=FALSE, cycler=FALSE, scrollBehavior=c("smooth", "auto"),
-    #   markOpts=configurator
-    # )
-
     args <- c()
-
     
     if (input$counter)
       args <- c(args, "counter=TRUE")
@@ -129,13 +123,15 @@ server <- function(input, output, session) {
         markOpts <- c(markOpts, sprintf(fmt, opt, value))
       }
     }
+    
 
     call <- c('searchbar(id, context, value=NULL, label=NULL, width=NULL, placeholder=NULL')
     
     if (length(args)) {
-      call <- c(call,
-        sprintf('  %s', paste(args, collapse=", "), "")
-      )
+      call <- if (length(markOpts) == 0) 
+        c(call, sprintf('  %s', paste(args, collapse=", "), ""))
+      else
+        c(call, sprintf('  %s,', paste(args, collapse=", "), ""))
     }
 
     if (length(markOpts)) {
@@ -143,23 +139,22 @@ server <- function(input, output, session) {
         chunks <- chunk(markOpts)
         call <- c(call,
           '  markOpts=list(',
-          paste('    ', lapply(chunks, paste, collapse=", "), collapse="\n"),
-          ')'
+          paste('    ', lapply(chunks, paste, collapse=", "), collapse=",\n"),
+          '  )'
         )
       } else {
         call <- c(call,
-          sprintf('  markOpts=list(%s)', paste(markOpts, collapse=", ")),
-          ')'
+          sprintf('  markOpts=list(%s)', paste(markOpts, collapse=", "))
         )
       }
-    } else if (length(args)) {
-      call <- c(call, ')')
     }
 
-    if (length(call) > 1)
+    if (length(call) > 1) {
       call[1] = paste0(call[1], ",")
-    else
+      call <- c(call, ')')
+    } else {
       call[1] = paste0(call[1], ")")
+    }
 
     return(paste(call, collapse="\n"))
   })
