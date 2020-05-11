@@ -56,11 +56,9 @@ ui <- function(id) {
 }
 
 server <- function(input, output, session) {
-  output$`full_text` <- renderText(
-    paste(lapply(strsplit(lorem[6:8], "\\. "), paste, collapse=" shinySearchbar. "), collapse="\n\n")
-  )
+  output$`full_text` <- renderText(addtext(lorem[6:8]))
 
-  output$`basic_text` <- renderText(paste(lorem[1:2], collapse="\n\n"))
-  output$`cycler_text` <- renderText(paste(lorem[2:4], collapse="\n\n"))
-  output$`counter_text` <- renderText(paste(lorem[4:6], collapse="\n\n"))
+  output$`basic_text` <- renderText(addtext(lorem[1:2]))
+  output$`cycler_text` <- renderText(addtext(lorem[2:4]))
+  output$`counter_text` <- renderText(addtext(lorem[4:6]))
 }

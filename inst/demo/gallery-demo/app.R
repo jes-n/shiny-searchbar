@@ -11,6 +11,10 @@ sys.source("configuration.R", envir=configuration)
 #' Load internal lorem ipsum text
 lorem <- shinySearchbar:::lorem
 
+addtext <- function(lines, addition="shinySearchbar") {
+  paste(lapply(strsplit(lines, "\\. "), paste, collapse=sprintf(" %s. ", addition)), collapse="\n\n")
+}
+
 ui <- fluidPage(
   tags$head(
     tags$link(rel="stylesheet", type="text/css", href="style.css")
@@ -20,7 +24,7 @@ ui <- fluidPage(
 
   tabsetPanel(
     tabPanel("Searchbar Widget", examples$ui("examples")),
-    tabPanel("Configurable Options", configuration$ui("configuration"))
+    tabPanel("Configuration", configuration$ui("configuration"))
   )
 )
 

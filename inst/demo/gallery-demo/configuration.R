@@ -34,7 +34,7 @@ ui <- function(id) {
       checkboxInput(ns("caseSensitive"), label="Case sensitive", value=FALSE),
       checkboxInput(ns("ignoreJoiners"), label="Ignore joiners", value=FALSE),
       checkboxInput(ns("acrossElements"), label="Across elements", value=FALSE),
-      checkboxInput(ns("debug"), label="Debug", value=FALSE)
+      checkboxInput(ns("debug"), label="Debug (check the browser's console)", value=FALSE)
     ),
 
     mainPanel(
@@ -60,7 +60,7 @@ chunk <- function(x, base=3) split(x, ceiling(seq_along(x)/base))
 server <- function(input, output, session) {
   options <- reactiveValues(markOpts=shinySearchbar:::configurator)
 
-  output$text <- renderText(paste(lorem[8:20], collapse="\n\n"))
+  output$text <- renderText(addtext(lorem[8:20]))
 
   output$sb_ui <- renderUI({
     keyword <- isolate(input$sb$keyword)
@@ -83,7 +83,16 @@ server <- function(input, output, session) {
 
   options <- reactiveValues()
 
-  observe({
+  observeEvent({
+    input$accuracy
+    input$wildcards
+    input$separateWordSearch
+    input$diacritics
+    input$caseSensitive
+    input$ignoreJoiners
+    input$acrossElements
+    input$debug
+  }, {
     options$markOpts$accuracy = input$accuracy
     options$markOpts$wildcards = input$wildcards
 
@@ -98,7 +107,7 @@ server <- function(input, output, session) {
       markOpts=options$markOpts,
       session=session
     )
-  })
+  }, ignoreInit=TRUE)
 
   output$call <- renderText({
     args <- c()
@@ -123,7 +132,7 @@ server <- function(input, output, session) {
         markOpts <- c(markOpts, sprintf(fmt, opt, value))
       }
     }
-    
+
 
     call <- c('searchbar(id, context, value=NULL, label=NULL, width=NULL, placeholder=NULL')
     
