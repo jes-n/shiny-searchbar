@@ -13,17 +13,20 @@ NULL
 #'
 configurator <- list(
   className="",
-  separateWordSearch=TRUE,
   accuracy=c("partially", "complementary", "exactly"),
-  diacritics=TRUE,
   synonyms=list(),
+
+  ignorePunctuation=c(),
+  wildcards=c("disabled", "enabled", "withSpaces"),
+
   iframes=FALSE,
   iframesTimeout=5000,
+
+  separateWordSearch=TRUE,
+  diacritics=TRUE,
   acrossElements=FALSE,
   caseSensitive=FALSE,
   ignoreJoiners=FALSE,
-  ignorePunctuation=c(),
-  wildcards=c("disabled", "enabled", "withSpaces"),
   debug=FALSE
 )
 
@@ -33,7 +36,7 @@ configurator <- list(
 #'
 #' @import jsonlite
 #' @export
-searchbar <- function(inputId, context, label=NULL, width=NULL, placeholder=NULL,
+searchbar <- function(inputId, context, value=NULL, label=NULL, width=NULL, placeholder=NULL,
     counter=FALSE, cycler=FALSE, scrollBehavior=c("smooth", "auto"),
     markOpts=configurator
   ) {
@@ -59,7 +62,7 @@ searchbar <- function(inputId, context, label=NULL, width=NULL, placeholder=NULL
   addResourcePath(prefix='css', directoryPath=system.file("assets/css", package='shinySearchbar'))
 
   searchbarTags <- tagList(
-    tags$input(class="form-control", type="text", id=inputId %_% "keyword", placeholder=placeholder)
+    tags$input(class="form-control", type="text", id=inputId %_% "keyword", placeholder=placeholder, value=value)
   )
 
   if (counter) {
@@ -90,7 +93,7 @@ searchbar <- function(inputId, context, label=NULL, width=NULL, placeholder=NULL
 
     div(class = "form-group shiny-input-container",
       style = if (!is.null(width)) paste0("width: ", validateCssUnit(width), ";"),
-      label %AND% tags$label(label, `for` = inputId),
+      shiny:::shinyInputLabel(inputId, label),
 
       div(id=inputId, class = if (cycler) "input-group shiny-sb" else "shiny-sb",
         searchbarTags,
@@ -102,4 +105,15 @@ searchbar <- function(inputId, context, label=NULL, width=NULL, placeholder=NULL
       )
     )
   )
+}
+
+#' <Add Title>
+#'
+#' <Add Description>
+#'
+#' @import shiny
+#' @export
+updateMarkOptions <- function(id, markOpts, session=shiny::getDefaultReactiveDomain()) {
+  message <- list(id=id, markOpts=markOpts)
+  session$sendCustomMessage("updateMarkOptions", message)
 }

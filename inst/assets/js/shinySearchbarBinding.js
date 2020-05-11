@@ -2,7 +2,7 @@
  * Perform the text highlighting using mark.js
  * @param {HTMLElement} el The searchbar input binding element.
  */
-highlight = function (el) {
+function highlight(el) {
   const keyword = el.$searchbar.val();
 
   const opts = {
@@ -32,7 +32,7 @@ highlight = function (el) {
  * Updates the search bar counter
  * @param {HTMLElement} el The searchbar input binding element.
  */
-counter = function (el) {
+function counter(el) {
   let msg;
 
   // Remove classes
@@ -66,7 +66,7 @@ counter = function (el) {
  * @param {HTMLElement} el The searchbar input binding element.
  * @param {jQuery} $mark The mark element that is currently highlighted.
  */
-jump = function (el, $mark) {
+function jump(el, $mark) {
   const $parent = $mark.parent();
   const parentOffset = $parent.offset();
   const markOffset = $mark.offset();
@@ -100,7 +100,7 @@ jump = function (el, $mark) {
  * @param {!int} index Index of the currently highlighted mark within the
  *     results array.
  */
-current = function (el, index) {
+function current(el, index) {
   if ($(el).data("matches") > 0) {
     const $results = el.$context.find("mark");
     const $mark = $results.eq(index);
@@ -118,7 +118,7 @@ current = function (el, index) {
  * @param {!HTMLButtonElement} btn The button that was pressed to execute
  *     the next cycle.
  */
-cycle = function (el, btn) {
+function cycle(el, btn) {
   const total = $(el).data("matches");
   let index = $(el).data("current");
 
@@ -154,6 +154,9 @@ $.extend(searchbar, {
 
     $(el).data("matches", 0);
     $(el).data("current", $(el).data("cycler") ? 0 : null);
+
+    // Initialize any default value
+    if (el.$searchbar.val()) highlight(el);
   },
 
   getValue: function (el) {
@@ -201,3 +204,22 @@ $.extend(searchbar, {
 });
 
 Shiny.inputBindings.register(searchbar);
+
+
+/**
+ * Update the 'mark-options' data attribute of an already initialized
+ * search bar widget element.
+ * @param {object} message Widget's `id` and new `markOpts`
+ */
+function updateMarkOptions(message) {
+  const $el = $(document).find("#" + message['id']);
+
+  $el.data("mark-options", {
+    ...$el.data("mark-options"),
+    ...message['markOpts'],
+  });
+
+  highlight($el.get(0));
+};
+
+Shiny.addCustomMessageHandler("updateMarkOptions", updateMarkOptions);
