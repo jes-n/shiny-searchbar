@@ -2,7 +2,7 @@ demoui <- function(name, title, msg=NULL, ...) {
   searchbarid = paste(name, "sb", sep="_")
   textid = paste(name, "text", sep="_")
 
-  wellPanel(
+  tags$form(class="well", style="margin: 10px",
     fluidRow(
       column(width=4,
         tags$h4(title),
@@ -27,10 +27,10 @@ ui <- function(id) {
 
   tagList(
     demoui(ns("full"),
-      title = "Shiny Searchbar is an interactive and responsive widget to search and highlight text",
+      title = "Shiny Searchbar is an interactive and responsive widget to search for and highlight text",
       msg   = paste(
-        "Highly configurable, automatic scrolling, and result count feedback,",
-        "try searching for shinySearchbar!",
+        "Highly configurable, automatic scrolling, and result count feedback.",
+        "Try searching for shinySearchbar!",
         sep="<br>"
       ),
       cycler=TRUE, counter=TRUE
@@ -48,7 +48,7 @@ ui <- function(id) {
     ),
 
     demoui(ns("counter"),
-      title = "Display the number of search term matches",
+      title = "Display the number of matches",
       msg   = "Try not matching anything! (Hint: the coloring is done with CSS)",
       counter=TRUE
     )

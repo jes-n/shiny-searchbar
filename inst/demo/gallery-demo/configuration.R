@@ -2,46 +2,48 @@ ui <- function(id) {
   ns <- shiny::NS(id)
 
   tagList(
-    sidebarPanel(
-      uiOutput(ns("sb_ui")),
+    column(width=4,
+      tags$form(class="well", style="margin: 10px;",
+        uiOutput(ns("sb_ui")),
 
-      tags$hr(),
-      tags$h4("Searchbar Functionality"),
+        tags$hr(),
+        tags$h4("Searchbar Functionality"),
 
-      checkboxInput(ns("counter"), label="Counter", value=FALSE),
-      checkboxInput(ns("cycler"), label="Cycler", value=FALSE),
-      uiOutput(ns("cycler_options")),
+        checkboxInput(ns("counter"), label="Counter", value=FALSE),
+        checkboxInput(ns("cycler"), label="Cycler", value=FALSE),
+        uiOutput(ns("cycler_options")),
 
-      tags$hr(),
-      tags$h4("mark.js Options"),
-      tags$p(class="text-muted",
-        HTML(sprintf("See the mark.js %s and the %s for more details.",
-          tags$a("Configurator", href="https://markjs.io/configurator.html", target="_blank"),
-          tags$a("documentation", href="https://markjs.io/#api", target="_blank")
-        ))
-      ),
+        tags$hr(),
+        tags$h4("mark.js Options"),
+        tags$p(class="text-muted",
+          HTML(sprintf("See the mark.js %s and the %s for more details.",
+            tags$a("Configurator", href="https://markjs.io/configurator.html", target="_blank"),
+            tags$a("documentation", href="https://markjs.io/#api", target="_blank")
+          ))
+        ),
 
-      selectInput(ns("accuracy"), 'Accuracy',
-        c("exactly", "partially", "complementary"), selected="partially", selectize=TRUE
-      ),
+        selectInput(ns("accuracy"), 'Accuracy',
+          c("exactly", "partially", "complementary"), selected="partially", selectize=TRUE
+        ),
 
-      selectInput(ns("wildcards"), 'Wild cards',
-        c("disabled", "enabled", "withSpaces"), selected="disabled", selectize=TRUE
-      ),
+        selectInput(ns("wildcards"), 'Wild cards',
+          c("disabled", "enabled", "withSpaces"), selected="disabled", selectize=TRUE
+        ),
 
-      checkboxInput(ns("separateWordSearch"), label="Seperate word search", value=TRUE),
-      checkboxInput(ns("diacritics"), label="Diacritics", value=TRUE),
-      checkboxInput(ns("caseSensitive"), label="Case sensitive", value=FALSE),
-      checkboxInput(ns("ignoreJoiners"), label="Ignore joiners", value=FALSE),
-      checkboxInput(ns("acrossElements"), label="Across elements", value=FALSE),
-      checkboxInput(ns("debug"), label="Debug (check the browser's console)", value=FALSE)
+        checkboxInput(ns("separateWordSearch"), label="Seperate word search", value=TRUE),
+        checkboxInput(ns("diacritics"), label="Diacritics", value=TRUE),
+        checkboxInput(ns("caseSensitive"), label="Case sensitive", value=FALSE),
+        checkboxInput(ns("ignoreJoiners"), label="Ignore joiners", value=FALSE),
+        checkboxInput(ns("acrossElements"), label="Across elements", value=FALSE),
+        checkboxInput(ns("debug"), label="Debug (check the browser's console)", value=FALSE)
+      )
     ),
 
-    mainPanel(
+    column(width=8,
       fluidRow(
         textOutput(ns("text"),
           container = function(...) 
-            tags$div(..., style="border: 1px solid #ccc; height: 500px; overflow-y: scroll; white-space: pre-wrap;")
+            tags$div(..., style="margin: 10px; height: 500px; overflow-y: scroll; white-space: pre-wrap;")
         )
       ),
 
