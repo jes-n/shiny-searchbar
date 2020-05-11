@@ -1,5 +1,13 @@
 ui <- fluidPage(
 
+  tags$head(
+    tags$style(HTML("
+      .control-label {
+        font-size: smaller;
+      }
+    "))
+  ),
+
   titlePanel("Shiny Searchbar Gallery"),
 
   tabsetPanel(
@@ -8,7 +16,7 @@ ui <- fluidPage(
     ),
 
     tabPanel("Options",
-      textOutput("result-counter")
+      configuration$ui("configuration")
     )
   )
 )

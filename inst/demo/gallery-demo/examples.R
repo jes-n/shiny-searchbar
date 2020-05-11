@@ -16,7 +16,7 @@ demoui <- function(name, title, msg=NULL, ...) {
       column(width=8, textOutput(
         textid,
         container = function(...) 
-          tags$div(..., style="border: 1px solid #ccc; background-color: #fff; height: 125px; overflow-y: scroll;")
+          tags$div(..., style="border: 1px solid #ccc; background-color: #fff; height: 125px; overflow-y: scroll; white-space: pre-wrap;")
       ))
     )
   )
@@ -52,8 +52,8 @@ ui <- function(id) {
 }
 
 server <- function(input, output, session) {
-  output$`basic_text` <- renderText(random_text(nwords = 500))
-  output$`cycler_text` <- renderText(random_text(nwords = 500))
-  output$`counter_text` <- renderText(random_text(nwords = 500))
-  output$`full_text` <- renderText(random_text(nwords = 500))
+  output$`basic_text` <- renderText(paste(lorem[1:2], collapse="\n\n"))
+  output$`cycler_text` <- renderText(paste(lorem[2:4], collapse="\n\n"))
+  output$`counter_text` <- renderText(paste(lorem[4:6], collapse="\n\n"))
+  output$`full_text` <- renderText(paste(lorem[6:8], collapse="\n\n"))
 }
