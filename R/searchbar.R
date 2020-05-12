@@ -35,6 +35,7 @@ configurator <- list(
 #' <Add Description>
 #'
 #' @import jsonlite
+#' @importFrom magrittr %>%
 #' @export
 searchbar <- function(inputId, context, value=NULL, label=NULL, width=NULL, placeholder=NULL,
     counter=FALSE, cycler=FALSE, scrollBehavior=c("smooth", "auto"),
