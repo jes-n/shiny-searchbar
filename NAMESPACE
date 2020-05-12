@@ -2,7 +2,7 @@
 
 export(searchbar)
 export(updateMarkOptions)
-import(jsonlite)
 import(shiny)
 import(tools)
+importFrom(jsonlite,toJSON)
 importFrom(magrittr,"%>%")

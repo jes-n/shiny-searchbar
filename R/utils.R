@@ -1,6 +1,7 @@
-#' Import shiny's internal `%AND%` function
+#' Shiny's internal `%AND%` function
 #'
 #' @import shiny
+#' @keywords internal
 `%AND%` <- shiny:::`%AND%`
 
 
@@ -9,12 +10,16 @@
 #' Inspired by shiny's `%.%` function which joins two arguments with a
 #' period (.), but instead uses an underscore (_) which is more suitable
 #' for HTML `id` attributes.
+#' 
+#' @keywords internal
 `%_%` <- function(x, y) paste(x, y, sep='_')
 
 
 #' Names-Not-In Operator
 #' 
 #' Shorthand to determine object names in `x` but not in `y`
+#' 
+#' @keywords internal
 `%nin%` <- function(x, y) names(x)[!(names(x) %in% names(y))]
 
 
@@ -40,6 +45,7 @@
 #' [1] 3
 #'
 #' @import tools
+#' @keywords internal
 default <- function(arg, choices, message=NULL) {
   arg <- tryCatch({
     # Determine the name of the calling function (i.e. which=-1)
@@ -63,7 +69,6 @@ default <- function(arg, choices, message=NULL) {
 
     # Used match.arg to issue a warning if the defined argument is not in the list of default arguments
     # This entire function is based off the match.arg function
-    # print(arg, choices)
     return(match.arg(arg, choices))
 
   }, error = function(e) {
@@ -91,4 +96,68 @@ default <- function(arg, choices, message=NULL) {
   })
 
   return(arg)
+}
+
+
+#' Validate the Options Passed to mark.js API
+#' 
+#' @keywords internal
+validateMarkOpts <- function(opts) {
+  valid <- shinySearchbar:::configurator
+
+  # Include additional options that *shouldn't* be set by the user
+  valid$each <- NA
+  valid$filter <- NA
+  valid$noMatch <- NA
+  valid$done <- NA
+  valid$log <- NA
+
+  # Check no invalid (or misspelled) options are passed to markOpts
+  # Take 'seperateWordSearch' instead of 'separateWordSearch', for example...
+  invalid <- opts %nin% valid
+  if (length(invalid) > 0) {
+    warning(paste(
+      sprintf("Invalid option(s) in 'markOpts' argument: %s", paste(invalid, collapse=" ")),
+      sprintf("  Should be %s", paste(names(shinySearchbar:::configurator), collapse=" ")),
+      sep = "\n"
+    ), call.=FALSE)
+  }
+
+  # Warn about changing the default mark.js element from 'mark'
+  if (("element" %in% names(opts)) && (opts$element != "mark")) {
+    warning(sprintf(paste(
+        "Setting the mark.js option 'element' to '%s' (default 'mark') could prevent the default shinySearchbar CSS highlighting.",
+        "  Using the 'className' option could be a better option, depending on the usecase.",
+        sep = "\n"
+      ), opts$element
+    ), call.=FALSE)
+  }
+
+  # Warn about the various mark.js callback options
+  if (any(c('each', 'filter', 'noMatch', 'done') %in% names(opts))) {
+    warning(paste(
+      "The mark.js callback options (each, filter, noMatch, and done) must be implemented in JavaScript.",
+      "  No JavaScript specific syntax is checked, check the brower's console for error messages.",
+      sep = "\n"
+    ), call.=FALSE)
+  }
+
+  # Warn about important behavior of the 'done' callback option
+  if ('done' %in% names(opts))
+    warning(
+      "Incorrectly changing the 'done' mark.js callback option will break the counter and scrolling behavior in shinySearchbar.",
+      call.=FALSE
+    )
+
+  # Default the options which have defined values
+  opts$accuracy <- default(opts$accuracy,
+    choices=shinySearchbar:::configurator$accuracy,
+    message="See https://markjs.io/#mark for more details."
+  )
+  opts$wildcards <- default(opts$wildcards,
+    choices=shinySearchbar:::configurator$wildcards,
+    message="See https://markjs.io/#mark for more details."
+  )
+
+  return(opts)
 }

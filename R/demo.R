@@ -1,12 +1,18 @@
 demos = list(
-  "basic" = "basic-demo",
   "overflow" = "overflow-demo",
   "gallery" = "gallery-demo"
 )
 
-#' Demo
+#' Shiny Searchbar Demos
 #' 
-#' Run a demo.
+#' Run one of the the shinySearchbar demos: "gallery" and "overflow".
+#' 
+#' @param name Name of the demo, either "gallery" or "overflow"
+#' 
+#' @examples
+#' if (interactive()) {
+#'   shinySearchbar:::demo("gallery")
+#' }
 #'
 #' @import shiny
 demo <- function(name="gallery", port=6169, ...) {
