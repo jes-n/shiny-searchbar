@@ -16,9 +16,9 @@ ui <- function(id) {
         tags$hr(),
         tags$h4("mark.js Options"),
         tags$p(class="text-muted",
-          HTML(sprintf("See the mark.js %s and the %s for more details.",
-            tags$a("Configurator", href="https://markjs.io/configurator.html", target="_blank"),
-            tags$a("documentation", href="https://markjs.io/#api", target="_blank")
+          HTML(sprintf("Only a select few options to mark.js are included below. See the mark.js %s and %s for additional options and details.",
+              tags$a("Configurator", href="https://markjs.io/configurator.html", target="_blank"),
+              tags$a("documentation", href="https://markjs.io/#api", target="_blank")
           ))
         ),
 
@@ -33,8 +33,6 @@ ui <- function(id) {
         checkboxInput(ns("separateWordSearch"), label="Seperate word search", value=TRUE),
         checkboxInput(ns("diacritics"), label="Diacritics", value=TRUE),
         checkboxInput(ns("caseSensitive"), label="Case sensitive", value=FALSE),
-        checkboxInput(ns("ignoreJoiners"), label="Ignore joiners", value=FALSE),
-        checkboxInput(ns("acrossElements"), label="Across elements", value=FALSE),
         checkboxInput(ns("debug"), label="Debug (check the browser's console)", value=FALSE)
       )
     ),
@@ -91,8 +89,6 @@ server <- function(input, output, session) {
     input$separateWordSearch
     input$diacritics
     input$caseSensitive
-    input$ignoreJoiners
-    input$acrossElements
     input$debug
   }, {
     options$markOpts$accuracy = input$accuracy
@@ -101,8 +97,6 @@ server <- function(input, output, session) {
     options$markOpts$separateWordSearch = input$separateWordSearch
     options$markOpts$diacritics = input$diacritics
     options$markOpts$caseSensitive = input$caseSensitive
-    options$markOpts$ignoreJoiners = input$ignoreJoiners
-    options$markOpts$acrossElements = input$acrossElements
     options$markOpts$debug = input$debug
 
     updateMarkOptions(session$ns("sb"),

@@ -1,22 +1,22 @@
-demoui <- function(name, title, msg=NULL, ...) {
+demoui <- function(name, placeholder=NULL, title=NULL, msg=NULL, ...) {
   searchbarid = paste(name, "sb", sep="_")
   textid = paste(name, "text", sep="_")
 
   tags$form(class="well", style="margin: 10px",
     fluidRow(
-      column(width=4,
-        tags$h4(title),
-        if (!is.null(msg)) tags$p(HTML(msg), class="text-muted"),
+      column(width=3,
+        if (!is.null(title)) tags$h4(title),
 
-        searchbar(searchbarid, context=textid, 
-          placeholder="Search text here...", ...
-        )
+        searchbar(searchbarid, context=textid, placeholder=placeholder, ...),
+
+        tags$hr(),
+        if (!is.null(msg)) tags$p(HTML(msg), class="text-muted"),
       ),
 
-      column(width=8, textOutput(
+      column(width=9, textOutput(
         textid,
         container = function(...) 
-          tags$div(..., style="border: 1px solid #ccc; background-color: #fff; height: 125px; overflow-y: scroll; white-space: pre-wrap;")
+          tags$div(..., style="border: 1px solid #ccc; background-color: #fff; height: 300px; overflow-y: scroll; white-space: pre-wrap;")
       ))
     )
   )
@@ -27,38 +27,31 @@ ui <- function(id) {
 
   tagList(
     demoui(ns("full"),
-      title = "Shiny Searchbar is an interactive and responsive widget to search for and highlight text",
+      placeholder = "Try searching for shinySearchbar!",
+      title = "Shiny Searchbar adds a widget for searching through and highlight text",
       msg   = paste(
-        "Highly configurable, automatic scrolling, and result count feedback.",
-        "Try searching for shinySearchbar!",
+        sprintf(
+          "Highly configurable matching (using %s), automatic scrolling, and feedback on the number of matches.",
+          tags$a("mark.js", href="https://markjs.io/", target="_blank")
+        ),
+        tags$ul(class="text-muted",
+          tags$li("Cycle through matches with the buttons or Enter (next) and Shift+Enter (prev)"),
+          tags$li("Try not matching anything (Hint: the coloring is done with CSS)")
+        ),
         sep="<br>"
       ),
       cycler=TRUE, counter=TRUE
     ),
 
     demoui(ns("basic"),
+      value = "shinySearchbar", markOpts=list(debug=TRUE),
       title = "Basic search term highlighting",
-      msg   = sprintf("Highlighting is done using %s.", tags$a("mark.js", href="https://markjs.io/", target="_blank"))
-    ),
-
-    demoui(ns("cycler"),
-      title = "Cycle through the matches (now with automatic scrolling!)",
-      msg   = "Cycling works with the buttons or Enter (next) and Shift+Enter (prev).",
-      cycler=TRUE
-    ),
-
-    demoui(ns("counter"),
-      title = "Display the number of matches",
-      msg   = "Try not matching anything! (Hint: the coloring is done with CSS)",
-      counter=TRUE
+      msg   = "A default value can be passed to the widget to automatically highlight text for the user."
     )
   )
 }
 
 server <- function(input, output, session) {
-  output$`full_text` <- renderText(addtext(lorem[6:8]))
-
-  output$`basic_text` <- renderText(addtext(lorem[1:2]))
-  output$`cycler_text` <- renderText(addtext(lorem[2:4]))
-  output$`counter_text` <- renderText(addtext(lorem[4:6]))
+  output$`full_text` <- renderText(addtext(lorem[10:20]))
+  output$`basic_text` <- renderText(addtext(lorem[1:10]))
 }
