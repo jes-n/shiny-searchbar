@@ -1,3 +1,11 @@
+library(shiny)
+library(shinySearchbar)
+
+lorem <- shinySearchbar:::lorem
+addtext <- function(lines, addition="shinySearchbar") {
+  paste(lapply(strsplit(lines, "\\. "), paste, collapse=sprintf(" %s. ", addition)), collapse="\n\n")
+}
+
 ui <- shinyUI(
   pageWithSidebar(
     headerPanel("Basic Shiny Searchbar Example"),
@@ -20,7 +28,19 @@ ui <- shinyUI(
     ),
 
     mainPanel(
-      textOutput("text")
+      textOutput("text",
+        container=function(...) tags$div(..., style="white-space: pre-line;")
+      )
     )
   )
 )
+
+server <- function(input, output) {
+  output$text <- renderText(addtext(lorem))
+
+  output$result <- renderPrint({
+    str(input$searchbar)
+  })
+}
+
+shinyApp(ui, server)

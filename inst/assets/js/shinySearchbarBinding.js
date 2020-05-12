@@ -14,7 +14,7 @@ function highlight(el) {
       $(el).data("current", $(el).data("cycler") ? 0 : null);
     },
   };
-
+  
   el.$context.unmark({
     // Check for the iframes options or assign default value of 'false'
     iframes: opts.hasOwnProperty('iframes') ? opts.iframes : false,
@@ -62,32 +62,55 @@ function counter(el) {
 
 
 /**
- * Scrol to the currently highlighted mark element
+ * Scrol to the currently highlighted mark element.
+ * 
+ * This works in either an overflow element or the window itself.
+ * 
  * @param {HTMLElement} el The searchbar input binding element.
  * @param {jQuery} $mark The mark element that is currently highlighted.
  */
 function jump(el, $mark) {
-  const $parent = $mark.parent();
-  const parentOffset = $parent.offset();
+  let parent = $mark.parent().get(0);
+
   const markOffset = $mark.offset();
-
-  // Calculate the vertical position for scrolling
   const markHeight = $mark.height();
-  let toppos = $parent.scrollTop() + markOffset.top - parentOffset.top;
-  toppos -= 1.5*markHeight; // Leave a small amount of vertical margin for context
-
-  // Calculate the horizontal position for scrolling
-  // Unlike the vertical position, this will only scroll if the mark is out of the parent window
-  const parentWidth = $parent.outerWidth();
   const markWidth = $mark.width();
-  let leftpos = $parent.scrollLeft() + markOffset.left - parentOffset.left;
+
+  // The method of scrolling depends on if the parent element has overflow
+  let parentWidth;
+  if (parent.offsetHeight < parent.scrollHeight || parent.offsetWidth < parent.scrollWidth) {
+    parentWidth = $(parent).outerWidth();
+    const parentOffset = $(parent).offset();
+
+    let parentTop = $(parent).scrollTop();
+    let parentLeft = $(parent).scrollLeft();
+
+    // Calculate the vertical and horizontal positions for scrolling
+    toppos = parentTop + markOffset.top - parentOffset.top;
+    leftpos = parentLeft + markOffset.left - parentOffset.left;
+
+  } else {
+    parentWidth = window.innerWidth;
+
+    // Simply set the vertical and horizontal positions, based on the mark
+    toppos = markOffset.top;
+    leftpos = markOffset.left;
+    
+    // Set the parent to the window element for scrolling
+    parent = window;
+  }
+
+  // Add a small amount of vertical space for context
+  toppos -= 1.5*markHeight;
+
+  // Unlike the vertical position, the horizontal position will only scroll if the mark is out of the window
   if ((leftpos + markWidth) > parentWidth) {
     leftpos -= (parentWidth - markWidth)/2; // Horizontally center the mark in the parent window
   } else {
     leftpos = 0;
   }
 
-  $parent[0].scrollTo({
+  parent.scrollTo({
     left: leftpos,
     top: toppos,
     behavior: $(el).data("scroll-behavior")
