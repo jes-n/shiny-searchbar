@@ -179,7 +179,27 @@ $.extend(searchbar, {
     $(el).data("current", $(el).data("cycler") ? 0 : null);
 
     // Initialize any default value
-    if (el.$searchbar.val()) highlight(el);
+    if (el.$searchbar.val()) {
+      // If the context element already contains text, simply highlight it
+      if (el.$context.text()) {
+        highlight(el)
+
+      // If the context element is empty highlighting must wait until the text is loaded
+      // https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
+      } else {
+        const observer = new MutationObserver(function() {
+          if (el.$context.text()) {
+            highlight(el);
+
+            // Once the text exists and has been highlighted, disconnect the observer
+            this.disconnect();
+          }
+        });
+
+        // https://developer.mozilla.org/en-US/docs/Web/API/MutationObserverInit
+        observer.observe(el.$context.get(0), {childList: true, characterData: true});
+      }
+    }
   },
 
   getValue: function (el) {
