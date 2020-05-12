@@ -1,8 +1,5 @@
 demos = list(
   "basic" = "basic-demo",
-  "cycler" = "cycler-demo",
-  "iframe" = "iframe-demo",
-  "counter" = "counter-demo",
   "overflow" = "overflow-demo",
   "gallery" = "gallery-demo"
 )
