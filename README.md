@@ -74,10 +74,10 @@ Finally, the `markOpts` list sets the options that are passed to the underlying 
 configurator <- list(
   element="mark",
   className="",
-  exclude=list(),
+  exclude=c(),
   accuracy=c("partially", "complementary", "exactly"),
-  synonyms=c(),
-  ignorePunctuation=list(),
+  synonyms=list(),
+  ignorePunctuation=c(),
   wildcards=c("disabled", "enabled", "withSpaces"),
   iframes=FALSE,
   iframesTimeout=5000,
