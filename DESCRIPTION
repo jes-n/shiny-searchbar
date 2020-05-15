@@ -20,9 +20,9 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Collate: 
-  'demo.R'
-  'utils.R'
-  'searchbar.R'
+    'demo.R'
+    'utils.R'
+    'input-searchbar.R'
 Imports: 
   shiny,
   jsonlite
