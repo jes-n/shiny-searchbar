@@ -21,7 +21,9 @@ devtools::install_github("jes-n/shinySearchbar")
 
 #### Demo
 
-The installation includes a demo that can be run with the following (in the R command line):
+Try the demo on shinyapps [here](https://affeinated.shinyapps.io/shinySearchbar/)!
+
+It is also included in the installation and can be run locally with the following (in the R command line):
 
 ```R
 shinySearchbar:::demo()

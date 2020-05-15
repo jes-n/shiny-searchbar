@@ -39,14 +39,14 @@ ui <- function(id) {
           tags$li("Try not matching anything (Hint: the coloring is done with CSS)")
         ),
         sep="<br>"
-      ),
-      cycler=TRUE, counter=TRUE
+      )
     ),
 
     demoui(ns("basic"),
       value = "shinySearchbar",
       title = "Basic search term highlighting",
-      msg   = "A default value can be passed to the widget to automatically highlight text for the user."
+      msg   = "A default value can be passed to the widget to automatically highlight text for the user.",
+      cycler=FALSE, counter=FALSE
     )
   )
 }
