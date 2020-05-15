@@ -5,15 +5,13 @@ Authors@R: c(
     person("Jesse", "Norris", email = "affeinated@gmail.com", role = c("aut", "cre")),
     person("Julian", "Kühnel", role = "ctb", comment = "mark.js")
   )
-Description: Easily add a searchbar widget to your R Shiny application. The
-  searchbar is similar to a textInput widget but adds more interaction and
-  user feedback. The widget quickly integrates with any existing Shiny or
-  HTML element (using its id attribute) to highlight and cycle through
-  keyword matches. The searchbar uses mark.js to highlight the user's input.
-  The searchbar can cycle through multiple instances of the match and
-  automatically scroll to the correct position and provide the user quick
-  feedback as to how many matches have been made or which match is currently
-  being looked at.
+Description: Add a searchbar widget to your R Shiny application. The widget
+  quickly integrates with any existing element containing text to highlight
+  matches. Highlighting is done with the JavaScript library mark.js. The widget
+  includes buttons to cycle through multiple instances of the match and
+  automatically scroll to the matches in an overflow element (or window). The
+  widget also displays the total number of matches and which match is currently
+  being cycled through. The widget is structured as a Bootstrap 3 input group.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

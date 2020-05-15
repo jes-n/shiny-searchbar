@@ -84,11 +84,12 @@ configurator <- list(
 See the documentation and the demo for more examples of all these options. For detailed information on the [mark.js][markjs] specific options, see its [API][api] and interactive [Configurator][configurator].
 
 ### Acknowledgments
-This widget uses [mark.js][markjs] for highlighting the search terms and determining the number of matches. It was also inspired by the ["jump to matches" example][jumpfiddle] provided by the same library.
-
+* This widget uses [mark.js][markjs] for highlighting the search terms and determining the number of matches. It was also inspired by the ["jump to matches" example][jumpfiddle] provided by the same library.
+* The [gadenbuie/lorem][lorem] R package on GitHub was used to generate the Lorem Ipsum text used in the demos.
 
 [bs3input]: https://getbootstrap.com/docs/3.4/components/#input-groups
 [markjs]: https://markjs.io/
 [api]: https://markjs.io/#mark
 [configurator]: https://markjs.io/configurator.html
 [jumpfiddle]: https://jsfiddle.net/julmot/973gdh8g/
+[lorem]: https://github.com/gadenbuie/lorem

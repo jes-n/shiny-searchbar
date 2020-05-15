@@ -12,7 +12,7 @@ NULL
 #' \href{https://markjs.io/configurator.html}{Configurator} for these
 #' options in action.
 #' 
-#' @format List with 15 name elements.
+#' @format List with 15 named elements.
 #' \describe{
 #'   \item{element}{Element tag to wrap matches, default is `"mark"`.}
 #'   \item{className}{Class named appended to the match element,
