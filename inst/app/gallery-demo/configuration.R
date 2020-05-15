@@ -65,7 +65,7 @@ server <- function(input, output, session) {
   output$sb_ui <- renderUI({
     keyword <- isolate(input$sb$keyword)
     tags$div(style="height: 60px;",
-      searchbar(session$ns("sb"), value=keyword, context=session$ns("text"), placeholder="Search text here...",
+      searchbar(session$ns("sb"), contextId=session$ns("text"), value=keyword, placeholder="Search text here...",
         counter=input$counter, cycler=input$cycler,
         scrollBehavior = if (is.null(input$scrollBehavior)) "smooth" else input$scrollBehavior,
         markOpts=options$markOpts
@@ -130,7 +130,7 @@ server <- function(input, output, session) {
     }
 
 
-    call <- c('searchbar(id, context, value=NULL, label=NULL, width=NULL, placeholder=NULL')
+    call <- c('searchbar(inputId, contextId, value=NULL, label=NULL, width=NULL, placeholder=NULL')
     
     if (length(args)) {
       call <- if (length(markOpts) == 0) 

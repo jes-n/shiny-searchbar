@@ -1,14 +1,34 @@
-#' Shiny's internal `%AND%` function
-#'
-#' @import shiny
+#' Shiny's internal \code{%AND%} function
+#' 
+#' Reproduced since it is not exported in the Shiny namespace.
+#' 
 #' @keywords internal
-`%AND%` <- shiny:::`%AND%`
+`%AND%` <- function(x, y) {
+  if (!is.null(x) && !isTRUE(is.na(x))) 
+    if (!is.null(y) && !isTRUE(is.na(y))) 
+      return(y)
+  return(NULL)
+}
+
+
+#' Shiny's internal \code{shinyInputLabel} function
+#' 
+#' Reproduced since it is not exported in the Shiny namespace.
+#' 
+#' @keywords internal
+shinyInputLabel <- function(inputId, label=NULL) {
+  tags$label(label,
+    class = "control-label",
+    class = if (is.null(label)) "shiny-label-null",
+    `for` = inputId
+  )
+}
 
 
 #' Underscore Join Operator
 #' 
-#' Inspired by shiny's `%.%` function which joins two arguments with a
-#' period (.), but instead uses an underscore (_) which is more suitable
+#' Inspired by Shiny's \code{%.%} operator which joins two arguments with a
+#' period (.), instead this uses an underscore (_) which is more suitable
 #' for HTML `id` attributes.
 #' 
 #' @keywords internal
@@ -20,7 +40,7 @@
 #' Shorthand to determine object names in `x` but not in `y`
 #' 
 #' @keywords internal
-`%nin%` <- function(x, y) names(x)[!(names(x) %in% names(y))]
+`%nni%` <- function(x, y) names(x)[!(names(x) %in% names(y))]
 
 
 #' Non-blocking match.arg with better error reporting.
@@ -30,21 +50,6 @@
 #' warning including the invalid argument value, the calling funcation, and 
 #' the expected argument values.
 #'
-#' @examples
-#' f <- function(a=c(1, 2)) {
-#'   a <- default(a)
-#'   return(a)
-#' }
-#'
-#' f(1)
-#' [1] 1
-#'
-#' f(3)
-#' Warning: Invalid option a='3' in 'f' call.
-#'   Should be one of 1, 2
-#' [1] 3
-#'
-#' @import tools
 #' @keywords internal
 default <- function(arg, choices, message=NULL) {
   arg <- tryCatch({
@@ -103,7 +108,7 @@ default <- function(arg, choices, message=NULL) {
 #' 
 #' @keywords internal
 validateMarkOpts <- function(opts) {
-  valid <- shinySearchbar:::configurator
+  valid <- configurator
 
   # Include additional options that *shouldn't* be set by the user
   valid$each <- NA
@@ -114,11 +119,11 @@ validateMarkOpts <- function(opts) {
 
   # Check no invalid (or misspelled) options are passed to markOpts
   # Take 'seperateWordSearch' instead of 'separateWordSearch', for example...
-  invalid <- opts %nin% valid
+  invalid <- opts %nni% valid
   if (length(invalid) > 0) {
     warning(paste(
       sprintf("Invalid option(s) in 'markOpts' argument: %s", paste(invalid, collapse=" ")),
-      sprintf("  Should be %s", paste(names(shinySearchbar:::configurator), collapse=" ")),
+      sprintf("  Should be %s", paste(names(configurator), collapse=" ")),
       sep = "\n"
     ), call.=FALSE)
   }
@@ -151,11 +156,11 @@ validateMarkOpts <- function(opts) {
 
   # Default the options which have defined values
   opts$accuracy <- default(opts$accuracy,
-    choices=shinySearchbar:::configurator$accuracy,
+    choices=configurator$accuracy,
     message="See https://markjs.io/#mark for more details."
   )
   opts$wildcards <- default(opts$wildcards,
-    choices=shinySearchbar:::configurator$wildcards,
+    choices=configurator$wildcards,
     message="See https://markjs.io/#mark for more details."
   )
 

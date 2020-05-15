@@ -7,7 +7,7 @@ demoui <- function(name, placeholder=NULL, title=NULL, msg=NULL, ...) {
       column(width=3,
         if (!is.null(title)) tags$h4(title),
 
-        searchbar(searchbarid, context=textid, placeholder=placeholder, ...),
+        searchbar(searchbarid, contextId=textid, placeholder=placeholder, ...),
 
         tags$hr(),
         if (!is.null(msg)) tags$p(HTML(msg), class="text-muted"),
@@ -44,7 +44,7 @@ ui <- function(id) {
     ),
 
     demoui(ns("basic"),
-      value = "shinySearchbar", markOpts=list(debug=TRUE),
+      value = "shinySearchbar",
       title = "Basic search term highlighting",
       msg   = "A default value can be passed to the widget to automatically highlight text for the user."
     )

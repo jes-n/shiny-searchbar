@@ -1,5 +1,4 @@
 library(shiny)
-library(shinipsum)
 library(shinySearchbar)
 
 examples <- new.env()

@@ -12,9 +12,7 @@ ui <- shinyUI(
         tags$i("cycler")
       ))),
 
-      searchbar("searchbar", context="text", placeholder="Try searching for 'shinySearchbar'",
-        cycler=TRUE, scrollBehavior="smooth"
-      ),
+      searchbar("searchbar", contextId="text", placeholder="Try searching for 'shinySearchbar'"),
 
       tags$hr(),
       tags$div(

@@ -24,11 +24,11 @@ test_that("default() reraises correct match.arg error", {
 })
 
 
-test_that("`%nin%`: names-not-in operator", {
+test_that("`%nni%`: names-not-in operator", {
   a <- list(A=1, B=2, C=3)
 
-  expect_equal(list(A=1, B=2, D=4) %nin% a, c('D'))
-  expect_equal(list(A=1, D=4, E=5) %nin% a, c('D', 'E'))
+  expect_equal(list(A=1, B=2, D=4) %nni% a, c('D'))
+  expect_equal(list(A=1, D=4, E=5) %nni% a, c('D', 'E'))
 })
 
 test_that("`%_%`: underscore join operator", {

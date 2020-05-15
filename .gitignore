@@ -1,1 +1,7 @@
-man
+Makefile
+build/
+release/
+
+# R files
+..Rcheck/
+*.Rcheck/

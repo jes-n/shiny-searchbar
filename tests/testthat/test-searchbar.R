@@ -17,9 +17,9 @@ attribute <- function(name, el) {
 test_that("Basic HTML structure", {
   # Generates the searchbar widget HTML tag
   # Contains a <head> (singleton) and <div> (container) element
-  inputID = "sb"
-  contextID = "text"
-  tag <- searchbar(inputID, context=contextID)
+  inputId = "sb"
+  contextId = "text"
+  tag <- searchbar(inputId, contextId=contextId, counter=FALSE, cycler=FALSE)
 
   # The singleton includes the JS/CSS dependencies
   head <- tag[[1]]
@@ -30,11 +30,12 @@ test_that("Basic HTML structure", {
       return(el$attribs$src)
     else
       return(el$attribs$href)
-  }) %>% unlist(use.name=FALSE)
+  })
+  dep <- unlist(deps, use.name=FALSE)
 
-  expect_true( "js/jquery.mark.min.js" %in% deps )
-  expect_true( "js/shinySearchbarBinding.js" %in% deps )
-  expect_true( "css/shinySearchbar.css" %in% deps )
+  expect_true( "shinySearchbar/jquery.mark.min.js" %in% deps )
+  expect_true( "shinySearchbar/shinySearchbarBinding.js" %in% deps )
+  expect_true( "shinySearchbar/shinySearchbar.css" %in% deps )
 
 
   # The container includes the remaining widget tags
@@ -47,15 +48,15 @@ test_that("Basic HTML structure", {
 
   # <label class="control-label" for="sb"></label>
   expect_equal( "label", label$name )
-  expect_equal( inputID, label$attribs$`for` )
+  expect_equal( inputId, label$attribs$`for` )
   expect_true( grepl("control-label", label$attribs$class) )
 
 
   widget <- container$children[[2]]
 
   # <div id="sb" class="shiny-sb" data-context=... data-cycler=... data-counter=... data-mark-options=...>
-  expect_equal( inputID, widget$attribs$id )
-  expect_equal( contextID, widget$attribs$`data-context` )
+  expect_equal( inputId, widget$attribs$id )
+  expect_equal( contextId, widget$attribs$`data-context` )
   expect_equal( "shiny-sb", widget$attribs$class )
   expect_true( "data-counter" %in% names(widget$attribs) )
   expect_true( "data-cycler" %in% names(widget$attribs) )
@@ -68,6 +69,6 @@ test_that("Basic HTML structure", {
   expect_equal( "input", searchbar$name )
   expect_equal( "text", searchbar$attribs$type )
   expect_equal( "form-control", searchbar$attribs$class )
-  expect_equal( inputID %_% "keyword", searchbar$attribs$id )
+  expect_equal( inputId %_% "keyword", searchbar$attribs$id )
 
 })

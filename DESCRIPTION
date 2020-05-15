@@ -1,34 +1,32 @@
 Package: shinySearchbar
-Type: package
-Title: Drop-in searchbar for R Shiny using mark.js and much more
-Version: 0.0.1
-Authors@R: 
-    person("Jesse", "Norris", email = "affeinated@gmail.com",
-           role = c("aut", "cre"))
-Description: ShinySearchbar easily adds a searchbar to your R Shiny app. The
-    searchbar is similar to a textInput widget but adds more interaction and
-    user feedback. The widget quickly integrates with any existing Shiny or
-    HTML element identified by an id to highlight and cycle through matches.
-    The searchbar uses mark.js to highlight the user's input, but offers much
-    more functionality than just that. The searchbar can cycle through multiple
-    instances of the match and automatically scroll to the correct position,
-    called the `cycler`. The search bar can also provide the user quick
-    feedback as to how many matches have been made or which match is currently
-    being looked at, call the `counter`.
-License: use_gpl3_license()
+Title: Shiny Searchbar - An Input Widget for Highlighting Text and Much More
+Version: 1.0.0
+Authors@R: c(
+    person("Jesse", "Norris", email = "affeinated@gmail.com", role = c("aut", "cre")),
+    person("Julian", "Kühnel", role = "ctb", comment = "mark.js")
+  )
+Description: Easily add a searchbar widget to your R Shiny application. The
+  searchbar is similar to a textInput widget but adds more interaction and
+  user feedback. The widget quickly integrates with any existing Shiny or
+  HTML element (using its id attribute) to highlight and cycle through
+  keyword matches. The searchbar uses mark.js to highlight the user's input.
+  The searchbar can cycle through multiple instances of the match and
+  automatically scroll to the correct position and provide the user quick
+  feedback as to how many matches have been made or which match is currently
+  being looked at.
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Collate: 
-    'demo.R'
-    'utils.R'
-    'searchbar.R'
+  'demo.R'
+  'utils.R'
+  'searchbar.R'
 Imports: 
-    shiny,
-    magrittr,
-    jsonlite
+  shiny,
+  jsonlite
 Suggests: 
-    testthat
+  testthat
 Depends: 
-    R (>= 2.10)
+  R (>= 2.10)

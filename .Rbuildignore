@@ -1,0 +1,6 @@
+^Makefile$
+^cran-comments\.md$
+
+^lib$
+^release$
+^data-raw$
