@@ -16,12 +16,14 @@ The **shinySearchbar** package adds an easy-to-implement searchbar widget to you
 
 ```R
 # Install the development version from GitHub:
-devtools::install_github("jes-n/shinySearchbar")
+devtools::install_github("jes-n/shiny-searchbar")
 ```
 
 #### Demo
 
-The installation includes a demo that can be run with the following (in the R command line):
+Try the demo on shinyapps [here](https://affeinated.shinyapps.io/shinySearchbar/)!
+
+It is also included in the installation and can be run locally with the following (in the R command line):
 
 ```R
 shinySearchbar:::demo()
