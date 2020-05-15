@@ -1,11 +1,15 @@
 # Shiny Searchbar
 
+<!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/shinySearchbar)](https://cran.r-project.org/package=shinySearchbar)
+<!-- badges: end -->
+
 The **shinySearchbar** package adds an easy-to-implement searchbar widget to your R Shiny application with `searchbar()`.
 
 * Highlight search terms within an element containing text (highlighting is done with [mark.js][markjs])
 * Cycle through matches with automatic scrolling in an overflow window _or_ elements
 * Quickly displays feedback on the number of matches
-* [Bootstrap 3][bs3input] input group widget
+* Bootstrap 3 [input group][bs3input] widget
 
 ![Shiny Searchbar Demo](man/figures/shiny-searchbar-demo.gif)
 
