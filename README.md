@@ -1,4 +1,5 @@
 # Shiny Searchbar
+
 The **shinySearchbar** package adds an easy-to-implement searchbar widget to your R Shiny application with `searchbar()`.
 
 * Highlight search terms within an element containing text (highlighting is done with [mark.js][markjs])
@@ -7,6 +8,7 @@ The **shinySearchbar** package adds an easy-to-implement searchbar widget to you
 * [Bootstrap 3][bs3input] input group widget
 
 ![Shiny Searchbar Demo](man/figures/shiny-searchbar-demo.gif)
+
 
 ### Getting Started
 
@@ -18,6 +20,7 @@ devtools::install_github("jes-n/shinySearchbar")
 ```
 
 #### Demo
+
 The installation includes a demo that can be run with the following (in the R command line):
 
 ```R
@@ -26,7 +29,9 @@ shinySearchbar:::demo()
 
 The demo provides examples of the searchbar widget in-action and a configuration tool to play around with the interface and mark.js options, along with automatically generating the corresponding `searchbar()` function call.
 
-#### Usage 
+
+#### Usage
+
 The searchbar widget is added to the UI portion of an R Shiny application using the function `searchbar(inputId, contextId)`. The function requires an `inputId` to assign as the _id_ attribute of its own element and a `contextId`, the _id_ attribute of the element containing text, to search and highlight.
 
 The following snippet is the a very basic Shiny application, including `searchbar()` and a text element:
@@ -47,7 +52,9 @@ server <- function(input, output) {
 shinyApp(ui, server)
 ```
 
+
 ### Options
+
 ```R
 searchbar(inputId, contextId, value=NULL, label=NULL, width=NULL, placeholder=NULL,
   counter=TRUE, cycler=TRUE, scrollBehavior=c("smooth", "auto"),
@@ -83,9 +90,12 @@ configurator <- list(
 
 See the documentation and the demo for more examples of all these options. For detailed information on the [mark.js][markjs] specific options, see its [API][api] and interactive [Configurator][configurator].
 
+
 ### Acknowledgments
+
 * This widget uses [mark.js][markjs] for highlighting the search terms and determining the number of matches. It was also inspired by the ["jump to matches" example][jumpfiddle] provided by the same library.
 * The [gadenbuie/lorem][lorem] R package on GitHub was used to generate the Lorem Ipsum text used in the demos.
+
 
 [bs3input]: https://getbootstrap.com/docs/3.4/components/#input-groups
 [markjs]: https://markjs.io/
