@@ -164,5 +164,16 @@ validateMarkOpts <- function(opts) {
     message="See https://markjs.io/#mark for more details."
   )
 
+  # mark.js expects 'exclude' as an Array, 'synonyms' as an Object, and 'ignorePunctuation' as an Array
+  # jsonlite makes assumptions for R data types of length 0, as described here: https://cran.r-project.org/web/packages/jsonlite/vignettes/json-mapping.pdf
+  # Such as c(1, 2, 3) becomes [1, 2, 3] while c() becomes {}
+  # If these options are of length 0, set them to the correct R data type for conversion with jsonlite
+  if (length(opts$exclude) == 0)
+    opts$exclude <- list()
+  if (length(opts$synonyms) == 0)
+    opts$synonyms <- c()
+  if (length(opts$ignorePunctuation) == 0)
+    opts$ignorePunctuation <- list()
+
   return(opts)
 }

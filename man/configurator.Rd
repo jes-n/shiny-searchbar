@@ -5,7 +5,7 @@
 \alias{configurator}
 \title{Configuration Options List for mark.js API}
 \format{
-List with 15 name elements.
+List with 15 named elements.
 \describe{
 \item{element}{Element tag to wrap matches, default is \code{"mark"}.}
 \item{className}{Class named appended to the match element,

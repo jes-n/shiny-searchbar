@@ -178,12 +178,14 @@ searchbar <- function(inputId, contextId, value=NULL, label=NULL, width=NULL, pl
 #' @param markOpts Options to update for mark.js API.
 #' @param session The `session` object passed to function given to
 #'   `shinyServer`.
+#' @param quiet Supress any warning related to incorrect/invalid arguments.
 #' 
 #' @seealso [configurator]
 #' 
 #' @import shiny
 #' @export
-updateMarkOptions <- function(inputId, markOpts, session=shiny::getDefaultReactiveDomain()) {
+updateMarkOptions <- function(inputId, markOpts, session=shiny::getDefaultReactiveDomain(), quiet=FALSE) {
+  markOpts <- if (quiet) suppressWarnings(validateMarkOpts(markOpts)) else validateMarkOpts(markOpts)
   message <- list(id=inputId, markOpts=markOpts)
   session$sendCustomMessage("updateMarkOptions", message)
 }

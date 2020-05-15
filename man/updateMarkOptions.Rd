@@ -7,7 +7,8 @@
 updateMarkOptions(
   inputId,
   markOpts,
-  session = shiny::getDefaultReactiveDomain()
+  session = shiny::getDefaultReactiveDomain(),
+  quiet = FALSE
 )
 }
 \arguments{
@@ -17,6 +18,8 @@ updateMarkOptions(
 
 \item{session}{The \code{session} object passed to function given to
 \code{shinyServer}.}
+
+\item{quiet}{Supress any warning related to incorrect/invalid arguments.}
 }
 \description{
 Only the options explicitly passed with this function are updated, the
