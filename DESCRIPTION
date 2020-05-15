@@ -12,6 +12,8 @@ Description: Add a searchbar widget to your R Shiny application. The widget
   automatically scroll to the matches in an overflow element (or window). The
   widget also displays the total number of matches and which match is currently
   being cycled through. The widget is structured as a Bootstrap 3 input group.
+URL: https://github.com/jes-n/shiny-searchbar
+BugReports: https://github.com/jes-n/shiny-searchbar/issues
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
