@@ -48,6 +48,9 @@ for more details.}
 
 \item{quiet}{Supress any warning related to incorrect/invalid arguments.}
 }
+\value{
+A seachbar input control that can be added to a UI definition.
+}
 \description{
 Create a textInput-like searchbar which can search through and highlight
 the user's input within another element.

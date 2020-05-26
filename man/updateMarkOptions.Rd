@@ -21,6 +21,9 @@ updateMarkOptions(
 
 \item{quiet}{Supress any warning related to incorrect/invalid arguments.}
 }
+\value{
+No return value, called to update \code{markOpts} of the input control.
+}
 \description{
 Only the options explicitly passed with this function are updated, the
 previous options are left unchanged.

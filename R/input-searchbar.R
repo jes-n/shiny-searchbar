@@ -94,6 +94,7 @@ configurator <- list(
 #'   see [configurator] and the \href{https://markjs.io/#mark}{mark.js API}
 #'   for more details.
 #' @param quiet Supress any warning related to incorrect/invalid arguments.
+#' @return A seachbar input control that can be added to a UI definition.
 #' 
 #' @seealso [updateMarkOptions], [configurator]
 #' 
@@ -179,6 +180,7 @@ searchbar <- function(inputId, contextId, value=NULL, label=NULL, width=NULL, pl
 #' @param session The `session` object passed to function given to
 #'   `shinyServer`.
 #' @param quiet Supress any warning related to incorrect/invalid arguments.
+#' @return No return value, called to update `markOpts` of the input control.
 #' 
 #' @seealso [configurator]
 #' 

@@ -1,17 +1,18 @@
 Package: shinySearchbar
-Title: Shiny Searchbar - An Input Widget for Highlighting Text and Much More
+Title: Shiny Searchbar - An Input Widget for Highlighting Text and More
 Version: 1.0.0
 Authors@R: c(
     person("Jesse", "Norris", email = "affeinated@gmail.com", role = c("aut", "cre")),
     person("Julian", "Kühnel", role = "ctb", comment = "mark.js")
   )
-Description: Add a searchbar widget to your R Shiny application. The widget
+Description: Add a searchbar widget to your 'Shiny' application. The widget
   quickly integrates with any existing element containing text to highlight
-  matches. Highlighting is done with the JavaScript library mark.js. The widget
-  includes buttons to cycle through multiple instances of the match and
+  matches. Highlighting is done with the 'JavaScript' library 'mark.js'. The
+  widget includes buttons to cycle through multiple instances of the match and
   automatically scroll to the matches in an overflow element (or window). The
   widget also displays the total number of matches and which match is currently
-  being cycled through. The widget is structured as a Bootstrap 3 input group.
+  being cycled through. The widget is structured as a 'Bootstrap 3' input
+  group.
 URL: https://github.com/jes-n/shiny-searchbar
 BugReports: https://github.com/jes-n/shiny-searchbar/issues
 License: GPL-3
