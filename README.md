@@ -19,6 +19,9 @@ The **shinySearchbar** package adds an easy-to-implement searchbar widget to you
 #### Installation
 
 ```R
+# Install the stable release from CRAN:
+install.packages("shinySearchbar")
+
 # Install the development version from GitHub:
 devtools::install_github("jes-n/shiny-searchbar")
 ```
